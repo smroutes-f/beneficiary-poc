@@ -1,15 +1,16 @@
-import { Component, TemplateRef, inject } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 
 import {
   ModalDismissReasons,
   NgbModalConfig,
   NgbModal,
+  NgbDatepickerModule
 } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [NgbDatepickerModule],
   providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

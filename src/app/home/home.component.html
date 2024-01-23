@@ -4,10 +4,10 @@
       <h4 class="modal-title" id="modal-basic-title mb-1">
         &lt; Account &gt; is missing a primary beneficiary
       </h4>
-      <p class="alert-info-description mt-1">
-        Now that you&#039;ve transferred money to this account, let&#039;s
-        make sure you secure your assets with a beneficiary. Naming a
-        beneficiary is free and it only takes a few minutes.
+      <p class="fnt-09 mt-1">
+        Now that you&#039;ve transferred money to this account, let&#039;s make
+        sure you secure your assets with a beneficiary. Naming a beneficiary is
+        free and it only takes a few minutes.
       </p>
     </div>
 
@@ -19,9 +19,252 @@
     ></button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="mb-3">Hello this is working.</div>
-    </form>
+    <div class="container">
+
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-end position-absolute right-1">
+            <button type="button" class="btn btn-success mr-2">Add</button>
+            <button type="button" class="btn btn-danger">Remove</button>
+          </div>
+
+          <div class="beneficiary-form">
+            <div class="row">
+              <div class="mb-3 col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Primary beneficiary</label
+                >
+                <select
+                  class="form-select is-valid"
+                  aria-label="Default select example"
+                >
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Full Name</label
+                >
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >First name</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >Middle name (optional)</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >Last name</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Date of birth</label
+                >
+                <div class="input-group">
+                  <input
+                    id="dateOfBirth"
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    ngbDatepicker
+                    #dp="ngbDatepicker"
+                  />
+                  <button
+                    class="btn btn-outline-secondary bi bi-calendar3"
+                    (click)="dp.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="form-label fw-semibold"
+                    >Percentage assigned</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control mw-14rem is-valid"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                  />
+                  <small id="emailHelp" class="form-text text-muted">
+                    Total percentage assigned must equal 100% if you have
+                    multiple beneficiaries
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-end position-absolute right-1">
+            <button type="button" class="btn btn-success mr-2">Add</button>
+            <button type="button" class="btn btn-danger">Remove</button>
+          </div>
+
+          <div class="beneficiary-form">
+            <div class="row">
+              <div class="mb-3 col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Primary beneficiary</label
+                >
+                <select
+                  class="form-select is-valid"
+                  aria-label="Default select example"
+                >
+                  <option selected>Open this select menu</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Full Name</label
+                >
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >First name</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >Middle name (optional)</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="col">
+                <label for="exampleFormControlInput1" class="form-label fnt-09"
+                  >Last name</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-4">
+                <label
+                  for="exampleFormControlInput1"
+                  class="form-label fw-semibold"
+                  >Date of birth</label
+                >
+                <div class="input-group">
+                  <input
+                    id="dateOfBirth"
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    ngbDatepicker
+                    #dp="ngbDatepicker"
+                  />
+                  <button
+                    class="btn btn-outline-secondary bi bi-calendar3"
+                    (click)="dp.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="exampleInputEmail1" class="form-label fw-semibold"
+                    >Percentage assigned</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control mw-14rem is-valid"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                  />
+                  <small id="emailHelp" class="form-text text-muted">
+                    Total percentage assigned must equal 100% if you have
+                    multiple beneficiaries
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <button
