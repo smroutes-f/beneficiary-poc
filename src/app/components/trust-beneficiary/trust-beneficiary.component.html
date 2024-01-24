@@ -70,7 +70,9 @@
               Total percentage assigned must equal 100% if you have multiple
               beneficiaries
             </small>
-            <div class="invalid-feedback">Please add the percentage assigned.</div>
+            <div class="invalid-feedback">
+              {{ getErrorMessages('percentageAssigned') }}
+            </div>
           </div>
         </div>
       </div>

@@ -41,6 +41,7 @@ export class BeneficiaryComponent {
   removeComponent() {
     if(this.otherFields) {
       this.otherFields.destroy();
+      this.items.removeControl('details')
     }
   }
 

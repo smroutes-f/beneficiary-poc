@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="getBeneficiariesCount() > 1">
       <div class="col">
         <div class="form-group">
           <label [for]="'percentageAssigned' + fieldIndex" class="form-label fw-semibold"
@@ -105,7 +105,10 @@
             Total percentage assigned must equal 100% if you have multiple
             beneficiaries
           </small>
-          <div class="invalid-feedback">Please add the percentage assigned.</div>
+          <div class="invalid-feedback">
+            {{ getErrorMessages('percentageAssigned') }}
+          </div>
+    
         </div>
       </div>
     </div>

@@ -5,11 +5,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -58,9 +61,9 @@ export class HomeComponent {
     config.keyboard = false;
 
     this.beneficiariesForm = this.fb.group({
-      beneficiaries: this.fb.array([
-        this.getPrimaryBeneficiaryFields()
-      ]),
+      beneficiaries: this.fb.array(
+        [ this.getPrimaryBeneficiaryFields()],
+        { validators: [ this.validatePercentageSum] }),
     });
   }
 
@@ -119,4 +122,25 @@ export class HomeComponent {
   removeNewBeneficiary(index: number) {
     this.beneficiaries.removeAt(index);
   }
+
+  private validatePercentageSum(control: AbstractControl): ValidationErrors | null {
+    const beneficiariesArray = control as FormArray;
+    const percentages = beneficiariesArray.controls.map(beneficiary =>
+      beneficiary.get('details.percentageAssigned') as FormControl
+    ).filter(el => !!el);
+
+    const sum = percentages.reduce((acc, curr) => acc + (curr.value || 0), 0);
+
+    if (sum !== 100) {
+      percentages.forEach(control => {
+        control.setErrors({ invalidPercentageSum: true });
+        control.markAsTouched(); // Mark the control as touched
+      });
+      
+      return { invalidPercentageSum: true };
+    }
+  
+    return null;
+  }
+
 }

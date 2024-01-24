@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
 import {
   NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
@@ -30,8 +31,9 @@ export class HumanBeneficiaryComponent {
       middleName: [],
       lastName: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
-      percentageAssigned: [100, Validators.required]
+      percentageAssigned: [100, [Validators.required, GreaterThanZeroValidator()]]
     }));
+
   }
 
   get details() {
@@ -44,5 +46,32 @@ export class HumanBeneficiaryComponent {
 
   isValidField (field: string) {
     return this.details.get(field)?.valid && this.details.get(field)?.touched;
+  }
+
+  getBeneficiariesCount() {
+    const root = this.fromGroup.root.get('beneficiaries') as FormArray;
+    return root.length;
+  }
+
+  hasFieldSpecificError (field: string, error: string) {
+    return this.details.get(field)?.hasError(error);
+  }
+
+  getErrorMessages(controlName: string): string {
+    const control = this.details.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'Please add the percentage assigned.';
+    }
+
+    if (control?.hasError('invalidPercentageSum')) {
+      return 'Total percentage assigned must equal 100%.';
+    }
+
+    if (control?.hasError('greaterThanZero')) {
+      return 'Please add a value greater than 0.';
+    }
+
+    return '';
   }
 }
