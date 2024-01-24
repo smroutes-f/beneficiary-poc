@@ -146,7 +146,11 @@ export class HomeComponent {
       
       return { invalidPercentageSum: true };
     }
-  
+
+    control.setErrors(null); // Clear the error if the sum is valid
+    beneficiariesArray.controls.forEach(beneficiary => {
+      beneficiary.get('details.percentageAssigned')?.setErrors(null);
+    });
     return null;
   }
 
