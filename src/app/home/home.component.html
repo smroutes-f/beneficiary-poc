@@ -15,6 +15,15 @@
 <div *ngIf="!showReviewPage">
   <div class="card">
     <div class="card-body">
+      <h4 class="modal-title" id="modal-basic-title mb-1">
+        &lt;Account&gt; is missing a primary beneficiary
+      </h4>
+      <p class="fnt-09 mt-1">
+        Now that you&#039;ve transferred money to this account, let&#039;s make
+        sure you secure your assets with a beneficiary. Naming a beneficiary is
+        free and it only takes a few minutes.
+      </p>
+
       <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="beneficiary-form" formArrayName="beneficiaries">
           <div *ngFor="let beneficiary of getArrayElements(); let i = index">

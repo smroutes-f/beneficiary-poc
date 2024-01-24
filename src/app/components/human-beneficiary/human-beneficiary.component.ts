@@ -31,9 +31,8 @@ export class HumanBeneficiaryComponent {
       middleName: [],
       lastName: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
-      percentageAssigned: [100, [Validators.required, GreaterThanZeroValidator()]]
+      percentageAssigned: [this.getInitialPaValue(), [Validators.required, GreaterThanZeroValidator()]]
     }));
-
   }
 
   get details() {
@@ -73,5 +72,11 @@ export class HumanBeneficiaryComponent {
     }
 
     return '';
+  }
+
+
+  getInitialPaValue() {
+    const t = this.fromGroup.root.get('beneficiaries') as FormArray;
+    return 100 / t.length;
   }
 }

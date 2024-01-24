@@ -87,10 +87,20 @@ export class HomeComponent {
 
   addNewBeneficiary() {
     this.beneficiaries.push(this.getPrimaryBeneficiaryFields());
+    this.updatePaValue();
+  }
+
+  updatePaValue() {
+    const pa = 100 / this.beneficiaries.length;
+    this.beneficiaries.controls.forEach(control => {
+      const t = control.get('details.percentageAssigned') as FormControl;
+      if(t) t.setValue(pa);
+    });
   }
 
   removeNewBeneficiary(index: number) {
     this.beneficiaries.removeAt(index);
+    this.updatePaValue();
   }
 
   private validatePercentageSum(control: AbstractControl): ValidationErrors | null {

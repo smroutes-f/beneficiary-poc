@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,7 +27,7 @@ export class TrustBeneficiaryComponent {
     this.fromGroup?.addControl('details', this.fb.group({
       trustName: ['', Validators.required],
       established: ['', Validators.required],
-      percentageAssigned: [100, [Validators.required, , GreaterThanZeroValidator()]]
+      percentageAssigned: [this.getInitialPaValue(), [Validators.required, , GreaterThanZeroValidator()]]
     }));
   }
 
@@ -63,5 +63,10 @@ export class TrustBeneficiaryComponent {
     }
 
     return '';
+  }
+
+  getInitialPaValue() {
+    const t = this.fromGroup.root.get('beneficiaries') as FormArray;
+    return 100 / t.length;
   }
 }
