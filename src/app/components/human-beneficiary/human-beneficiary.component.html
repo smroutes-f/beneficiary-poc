@@ -1,0 +1,112 @@
+<div [formGroup]="fromGroup">
+  <div formGroupName="details">
+    <div class="row">
+      <div class="col-4">
+        <label class="form-label fw-semibold">Full Name</label>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label [for]="'firstName' + fieldIndex" class="form-label fnt-09"
+          >First name</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': isInValidField('firstName'),
+            'is-valid': isValidField('firstName')
+          }"
+          [id]="'firstName' + fieldIndex"
+          placeholder="John"
+          formControlName="firstName"
+        />
+        <div class="invalid-feedback">Please add the first name.</div>
+      </div>
+      <div class="col">
+        <label [for]="'middleName' + fieldIndex" class="form-label fnt-09"
+          >Middle name (optional)</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [id]="'middleName' + fieldIndex"
+          placeholder="Miller"
+          formControlName="middleName"
+        />
+      </div>
+      <div class="col">
+        <label [for]="'lastName' + fieldIndex" class="form-label fnt-09"
+          >Last name</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': isInValidField('lastName'),
+            'is-valid': isValidField('lastName')
+          }"
+          [id]="'lastName' + fieldIndex"
+          placeholder="Doe"
+          formControlName="lastName"
+        />
+        <div class="invalid-feedback">Please add the last name.</div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-4">
+        <label [for]="'dateOfBirth' + fieldIndex" class="form-label fw-semibold"
+          >Date of birth</label
+        >
+        <div class="input-group">
+          <input
+            [id]="'dateOfBirth' + fieldIndex"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': isInValidField('dateOfBirth'),
+              'is-valid': isValidField('dateOfBirth')
+            }"
+            placeholder="yyyy-mm-dd"
+            ngbDatepicker
+            #dp="ngbDatepicker"
+            formControlName="dateOfBirth"
+          />
+          <button
+            class="btn btn-outline-secondary bi bi-calendar3"
+            (click)="dp.toggle()"
+            type="button"
+          ></button>
+          <div class="invalid-feedback">Please add the last name.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label [for]="'percentageAssigned' + fieldIndex" class="form-label fw-semibold"
+            >Percentage assigned</label
+          >
+          <input
+            type="number"
+            class="form-control mw-14rem"
+            [ngClass]="{
+                'is-invalid': isInValidField('percentageAssigned'),
+                'is-valid': isValidField('percentageAssigned')
+              }"
+            [id]="'percentageAssigned' + fieldIndex"
+            aria-describedby="percentageAssignedHelp"
+            placeholder="100%"
+            formControlName="percentageAssigned"
+          />
+          <small id="percentageAssignedHelp" class="form-text text-muted">
+            Total percentage assigned must equal 100% if you have multiple
+            beneficiaries
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
