@@ -299,7 +299,7 @@
   </div>
 </div>
 
-<div>
+<div *ngIf="!showReviewPage">
   <div class="card">
     <div class="card-body">
       <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
@@ -335,8 +335,64 @@
           </div>
         </div>
 
-        <button type="submit">Submit</button>
+        <div class="row border-top pt-2">
+          <div class="col text-center">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-box-arrow-in-right"></i> Next
+            </button>
+          </div>
+        </div>
+        
       </form>
     </div>
   </div>
 </div>
+
+<div *ngIf="showReviewPage">
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <h3>Dobule check the details before naming your beneficiaries</h3>
+        <p>Please review the information beow for accuracy.It will be used to identify your beneficiaries when you pass away.</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-8">
+          <h5>Primary beneficiary</h5>
+
+          <table class="table table-borderless mb-4" *ngFor="let bData of getReviewData(); let i = index">
+            <tbody>
+              <tr>
+                <td class="float-end">Name</td>
+                <td>{{ getName(bData) }}</td>
+              </tr>
+              <tr>
+                <td class="float-end">Relationship</td>
+                <td>{{ bData.type | capitalize }}</td>
+              </tr>
+              <tr>
+                <td class="float-end">Percentage assigned</td>
+                <td>{{ bData?.details?.percentageAssigned }}</td>
+              </tr>
+              <tr>
+                <td class="float-end">Date of Birth</td>
+                <td>{{ getFormatDate( bData?.details?.dateOfBirth || bData?.details?.established ) }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="row border-top pt-2">
+            <div class="col text-center d-flex gap-2 justify-content-center pl-12">
+              <button class="btn btn-outline-success" (click)="toggleReviewPage(false)">
+                <i class="bi bi-box-arrow-in-left"></i> Back
+              </button>
+              <button class="btn btn-success">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

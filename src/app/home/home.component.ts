@@ -24,10 +24,12 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeValidator } from '@app/utils/TypeValidator';
+import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 import {
   BeneficiaryTypes
 } from '@app/utils/constants';
 import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
+import { DateInfo, formatCustomDate } from '@app/utils/common';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +39,8 @@ import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.co
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    BeneficiaryComponent
+    BeneficiaryComponent,
+    CapitalizePipe
   ],
   providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
@@ -50,6 +53,7 @@ export class HomeComponent {
   closeResult = '';
   beneficiariesForm: FormGroup;
   otherFields: Array<any> = [];
+  showReviewPage: boolean = false;
 
   constructor(
     config: NgbModalConfig,
@@ -102,9 +106,12 @@ export class HomeComponent {
   }
 
   onSubmit() {
-    console.log('Form Submitted: ', this.beneficiariesForm.value);
-    console.log(this.beneficiariesForm.valid);
     this.beneficiariesForm.markAllAsTouched();
+
+    console.log(this.getReviewData());
+    if(this.beneficiariesForm.valid) {
+      this.showReviewPage = true;
+    }
   }
 
   get beneficiaries(): FormArray {
@@ -143,4 +150,31 @@ export class HomeComponent {
     return null;
   }
 
+  getReviewData() {
+    return this.beneficiaries.value;
+  }
+
+  getName(info: any): string {
+    if (info.type === 'TRUST') {
+      return info?.details?.trustName ?? 'Trust Name Not Available';
+    }
+  
+    const firstName = info?.details?.firstName ?? '';
+    const middleName = info?.details?.middleName ?? '';
+    const lastName = info?.details?.lastName ?? '';
+  
+    // Joining the names with a space and filtering out empty strings
+    const fullName = [firstName, middleName, lastName].filter(name => name.trim() !== '').join(' ');
+  
+    return fullName !== '' ? fullName : 'Name Not Available';
+  }
+
+  getFormatDate(date: DateInfo): string| null {
+    if(!date) return null;
+    return formatCustomDate(date);
+  }
+
+  toggleReviewPage(value: boolean): void {
+    this.showReviewPage = value;
+  }
 }
