@@ -2,9 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  ModalDismissReasons,
-  NgbModalConfig,
-  NgbModal,
   NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,8 +32,6 @@ export class HumanBeneficiaryComponent {
       dateOfBirth: ['', Validators.required],
       percentageAssigned: [100, Validators.required]
     }));
-
-    console.log(this.fromGroup);
   }
 
   get details() {

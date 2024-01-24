@@ -1,6 +1,5 @@
 import {
   Component,
-  QueryList,
   TemplateRef,
   ViewChild,
   ViewContainerRef
@@ -22,11 +21,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeValidator } from '@app/utils/TypeValidator';
-import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 import {
-  BeneficiaryTypes,
-  BeneficiariesComponents
+  BeneficiaryTypes
 } from '@app/utils/constants';
+import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +34,7 @@ import {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    CapitalizePipe,
+    BeneficiaryComponent
   ],
   providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
@@ -47,7 +45,6 @@ export class HomeComponent {
   @ViewChild('otherFormFields', { read: ViewContainerRef }) myContainerRef: ViewContainerRef | undefined;
 
   closeResult = '';
-  allBeneficiaryTypes: string[];
   beneficiariesForm: FormGroup;
   otherFields: Array<any> = [];
 
@@ -59,8 +56,6 @@ export class HomeComponent {
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;
-
-    this.allBeneficiaryTypes = Array.from(Object.values(BeneficiaryTypes));
 
     this.beneficiariesForm = this.fb.group({
       beneficiaries: this.fb.array([
@@ -113,42 +108,15 @@ export class HomeComponent {
     return this.beneficiariesForm.get('beneficiaries') as FormArray;
   }
 
-  onSelectChange(event: any, arrayIndex: number) {
-    const selectedValue = event.target.value;
-    if(selectedValue === 'null') {
-      this.removeComponent(arrayIndex);
-      return;
-    }
-
-    this.loadDynamicComponent(selectedValue, arrayIndex)
-  }
-
-  removeComponent(arrayIndex: number) {
-    if(this.otherFields[arrayIndex]) {
-      this.otherFields[arrayIndex].destroy();
-    }
-  }
-
-  loadDynamicComponent(type: string, arrayIndex: number) {
-
-    this.removeComponent(arrayIndex);
-
-    this.otherFields[arrayIndex] = this.myContainerRef?.createComponent(
-      BeneficiariesComponents[type]
-    );
-
-    // Access the extra component's instance for interaction
-    const extraComponentInstance = this.otherFields[arrayIndex].instance;
-    const t = this.beneficiaries.at(arrayIndex) as FormGroup;
-    extraComponentInstance.fromGroup = t;
-    extraComponentInstance.fieldIndex = arrayIndex;
-
-    // componentRef.instance.myOutput.subscribe(event => {
-    //   console.log('Event from extra component:', event);
-    // }); // Listen to output events
+  getArrayElements(): FormGroup[] {
+    return this.beneficiaries.controls.map(control => control as FormGroup);
   }
 
   addNewBeneficiary() {
     this.beneficiaries.push(this.getPrimaryBeneficiaryFields());
+  }
+
+  removeNewBeneficiary(index: number) {
+    this.beneficiaries.removeAt(index);
   }
 }

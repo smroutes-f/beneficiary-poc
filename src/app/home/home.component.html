@@ -302,48 +302,35 @@
 <div>
   <div class="card">
     <div class="card-body">
-      <div class="d-flex justify-content-end position-absolute right-1 gap-2">
-        <button type="button" class="btn btn-light" *ngIf="beneficiaries.length < 3" (click)="addNewBeneficiary()">
-          <i class="bi bi-plus-circle"></i> Add New
-        </button>
-        <button type="button" class="btn btn-warning" *ngIf="beneficiaries.length > 1">
-          <i class="bi bi-trash"></i> Remove
-        </button>
-      </div>
-
       <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="beneficiary-form" formArrayName="beneficiaries">
-          <div
-            *ngFor="let beneficiary of beneficiaries.controls; let i = index"
-          >
-            <div [formGroupName]="i">
-              {{ i }}
-              <div class="row">
-                <div class="mb-3 col-4">
-                  <label
-                    for="exampleFormControlInput1"
-                    class="form-label fw-semibold"
-                    >Primary beneficiary</label
-                  >
-                  <select
-                    class="form-select is-valid"
-                    aria-label="Default select example"
-                    formControlName="type"
-                    (change)="onSelectChange($event, i)"
-                  >
-                    <option [value]="null">Please select</option>
-                    <option
-                      *ngFor="let option of allBeneficiaryTypes"
-                      [value]="option"
-                    >
-                      {{ option | capitalize }}
-                    </option>
-                  </select>
-                </div>
+          <div *ngFor="let beneficiary of getArrayElements(); let i = index">
+            <div [formGroupName]="i" class="pt-3" [ngClass]="{ 'border-top': i > 0 }">
+              <div
+                class="d-flex justify-content-end position-absolute right-1 gap-2"
+              >
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  *ngIf="beneficiaries.length < 2 && i == beneficiaries.length - 1"
+                  (click)="addNewBeneficiary()"
+                >
+                  <i class="bi bi-plus-circle"></i> Add New
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  *ngIf="beneficiaries.length > 1"
+                  (click)="removeNewBeneficiary(i)"
+                >
+                  <i class="bi bi-trash"></i> Remove
+                </button>
               </div>
 
-              <ng-container #otherFormFields></ng-container>
-
+              <app-beneficiary
+                [items]="beneficiary"
+                [fieldIndex]="i"
+              ></app-beneficiary>
             </div>
           </div>
         </div>

@@ -1,0 +1,28 @@
+<div [formGroup]="items" class="mb-3">
+  <div class="row">
+    <div class="mb-3 col-4">
+      <label [for]="'PrimaryBeneficiary' + fieldIndex" class="form-label fw-semibold"
+        >Primary beneficiary</label
+      >
+      <select
+        class="form-select"
+        [ngClass]="{
+          'is-invalid': isInValidField('type'),
+          'is-valid': isValidField('type')
+        }"
+        aria-label="Default select example"
+        formControlName="type"
+        (change)="onSelectChange($event)"
+        [id]="'PrimaryBeneficiary' + fieldIndex"
+      >
+        <option [value]="null">Please select</option>
+        <option *ngFor="let option of allBeneficiaryTypes" [value]="option">
+          {{ option | capitalize }}
+        </option>
+      </select>
+      <div class="invalid-feedback">Please choose the beneficiary type.</div>
+    </div>
+  </div>
+
+  <ng-container #otherFormFields></ng-container>
+</div>

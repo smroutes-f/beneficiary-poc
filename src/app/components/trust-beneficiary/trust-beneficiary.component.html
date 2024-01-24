@@ -1,1 +1,79 @@
-<p>trust-beneficiary works!</p>
+<div [formGroup]="fromGroup">
+    <div formGroupName="details">
+      <div class="row mb-3">
+        <div class="col-6">
+          <label [for]="'trustName' + fieldIndex" class="form-label fnt-09"
+            >Trust name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{
+              'is-invalid': isInValidField('trustName'),
+              'is-valid': isValidField('trustName')
+            }"
+            [id]="'trustName' + fieldIndex"
+            placeholder="John"
+            formControlName="trustName"
+          />
+          <div class="invalid-feedback">Please add the trust name.</div>
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-4">
+          <label [for]="'established' + fieldIndex" class="form-label fw-semibold"
+            >Date of birth</label
+          >
+          <div class="input-group">
+            <input
+              [id]="'established' + fieldIndex"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': isInValidField('established'),
+                'is-valid': isValidField('established')
+              }"
+              placeholder="yyyy-mm-dd"
+              ngbDatepicker
+              #dp="ngbDatepicker"
+              formControlName="established"
+            />
+            <button
+              class="btn btn-outline-secondary bi bi-calendar3"
+              (click)="dp.toggle()"
+              type="button"
+            ></button>
+            <div class="invalid-feedback">Please add the date of established.</div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label [for]="'percentageAssigned' + fieldIndex" class="form-label fw-semibold"
+              >Percentage assigned</label
+            >
+            <input
+              type="number"
+              class="form-control mw-14rem"
+              [ngClass]="{
+                  'is-invalid': isInValidField('percentageAssigned'),
+                  'is-valid': isValidField('percentageAssigned')
+                }"
+              [id]="'percentageAssigned' + fieldIndex"
+              aria-describedby="percentageAssignedHelp"
+              placeholder="100%"
+              formControlName="percentageAssigned"
+            />
+            <small id="percentageAssignedHelp" class="form-text text-muted">
+              Total percentage assigned must equal 100% if you have multiple
+              beneficiaries
+            </small>
+            <div class="invalid-feedback">Please add the percentage assigned.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
