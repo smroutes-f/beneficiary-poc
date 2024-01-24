@@ -44,7 +44,6 @@ export class TrustBeneficiaryComponent {
   }
 
   hasFieldSpecificError (field: string, error: string) {
-    console.log(this.details.get(field)?.hasError('greaterThanZero'))
     return this.details.get(field)?.hasError(error);
   }
 

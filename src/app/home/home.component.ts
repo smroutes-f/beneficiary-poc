@@ -1,6 +1,5 @@
 import {
   Component,
-  TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -17,9 +16,6 @@ import {
 import { CommonModule } from '@angular/common';
 
 import {
-  ModalDismissReasons,
-  NgbModalConfig,
-  NgbModal,
   NgbDatepickerModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
@@ -42,7 +38,7 @@ import { DateInfo, formatCustomDate } from '@app/utils/common';
     BeneficiaryComponent,
     CapitalizePipe
   ],
-  providers: [NgbModalConfig, NgbModal],
+  providers: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -56,13 +52,8 @@ export class HomeComponent {
   showReviewPage: boolean = false;
 
   constructor(
-    config: NgbModalConfig,
-    private modalService: NgbModal,
     private fb: FormBuilder
   ) {
-    // customize default values of modals used by this component tree
-    config.backdrop = 'static';
-    config.keyboard = false;
 
     this.beneficiariesForm = this.fb.group({
       beneficiaries: this.fb.array(
@@ -75,34 +66,6 @@ export class HomeComponent {
     return  this.fb.group({
       type: [null, TypeValidator(Object.keys(BeneficiaryTypes))],
     });
-  }
-
-  open(content: TemplateRef<any>) {
-    this.modalService
-      .open(content, {
-        ariaLabelledBy: 'modal-basic-title',
-        centered: true,
-        size: 'lg',
-      })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
-    }
   }
 
   onSubmit() {
@@ -180,5 +143,9 @@ export class HomeComponent {
 
   toggleReviewPage(value: boolean): void {
     this.showReviewPage = value;
+  }
+
+  finalFormSubmit() {
+    alert("Form submitted..");
   }
 }

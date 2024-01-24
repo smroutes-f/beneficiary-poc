@@ -52,7 +52,6 @@ export class BeneficiaryComponent implements AfterViewInit {
 
   loadDynamicComponent(type: string, arrayIndex: number) {
 
-    console.log("called");
     this.removeComponent();
 
     this.otherFields = this.myContainerRef?.createComponent(
