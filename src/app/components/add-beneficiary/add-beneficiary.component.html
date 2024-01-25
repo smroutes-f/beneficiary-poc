@@ -83,8 +83,8 @@
                     type="text"
                     class="form-control"
                     [ngClass]="{
-                      'is-invalid': isInValidField('firstName', i),
-                      'is-valid': isValidField('firstName', i)
+                      'is-invalid': isInValidField('details.firstName', i),
+                      'is-valid': isValidField('details.firstName', i)
                     }"
                     [id]="'firstName' + i"
                     placeholder="John"
@@ -112,8 +112,8 @@
                     type="text"
                     class="form-control"
                     [ngClass]="{
-                      'is-invalid': isInValidField('lastName', i),
-                      'is-valid': isValidField('lastName', i)
+                      'is-invalid': isInValidField('details.lastName', i),
+                      'is-valid': isValidField('details.lastName', i)
                     }"
                     [id]="'lastName' + i"
                     placeholder="Doe"
@@ -133,8 +133,8 @@
                       [id]="'dateOfBirth' + i"
                       class="form-control"
                       [ngClass]="{
-                        'is-invalid': isInValidField('dateOfBirth', i),
-                        'is-valid': isValidField('dateOfBirth', i)
+                        'is-invalid': isInValidField('details.dateOfBirth', i),
+                        'is-valid': isValidField('details.dateOfBirth', i)
                       }"
                       placeholder="yyyy-mm-dd"
                       ngbDatepicker
@@ -152,8 +152,56 @@
               </div>
             </div>
 
-            <div class="trust-benificiary" *ngIf="checkType(i, 'TRUST')"></div>
-            
+            <div class="trust-benificiary" *ngIf="checkType(i, 'TRUST')">
+
+              <div class="row mb-3">
+                <div class="col-6">
+                  <label [for]="'trustName' + i" class="form-label fnt-09"
+                    >Trust name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.trustName', i),
+                      'is-valid': isValidField('details.trustName', i)
+                    }"
+                    [id]="'trustName' + i"
+                    placeholder="ABC Llc."
+                    formControlName="trustName"
+                  />
+                  <div class="invalid-feedback">Please add the trust name.</div>
+                </div>
+              </div>
+          
+              <div class="row mb-3">
+                <div class="col-4">
+                  <label [for]="'established' + i" class="form-label fw-semibold"
+                    >Date of established</label
+                  >
+                  <div class="input-group">
+                    <input
+                      [id]="'established' + i"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid': isInValidField('details.established', i),
+                        'is-valid': isValidField('details.established', i)
+                      }"
+                      placeholder="yyyy-mm-dd"
+                      ngbDatepicker
+                      #dp="ngbDatepicker"
+                      formControlName="established"
+                    />
+                    <button
+                      class="btn btn-outline-secondary bi bi-calendar3"
+                      (click)="dp.toggle()"
+                      type="button"
+                    ></button>
+                    <div class="invalid-feedback">Please add the date of established.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
         
             <div class="row" *ngIf="getBeneficiariesCount() > 1">
               <div class="col">
@@ -165,8 +213,8 @@
                     type="number"
                     class="form-control mw-14rem"
                     [ngClass]="{
-                        'is-invalid': isInValidField('percentageAssigned', i),
-                        'is-valid': isValidField('percentageAssigned', i)
+                        'is-invalid': isInValidField('details.percentageAssigned', i),
+                        'is-valid': isValidField('details.percentageAssigned', i)
                       }"
                     [id]="'percentageAssigned' + i"
                     aria-describedby="percentageAssignedHelp"

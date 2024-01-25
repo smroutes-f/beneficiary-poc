@@ -91,8 +91,7 @@ export class AddBeneficiaryComponent {
 
   onSelectChange(event: Event, index: number) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    console.log(selectedValue, index);
-
+    
     if (selectedValue === BeneficiaryTypes.TRUST) {
       this.setTrustBeneficiaryFormFields(index);
     } else if (
