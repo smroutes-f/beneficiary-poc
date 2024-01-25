@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <div style="flex-direction: column">
+    <h4
+      class="modal-title"
+      id="modal-basic-title mb-1"
+      [innerHTML]="getDisplayOption().headerText"
+    ></h4>
+    <p class="fnt-09 mt-1" [innerHTML]="getDisplayOption().description"></p>
+  </div>
+
+  <button
+    type="button"
+    class="btn-close cls-btn"
+    aria-label="Close"
+    (click)="closeCurrentModal('Cross click')"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <app-add-beneficiary #addBeneficiary></app-add-beneficiary>
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col text-center d-flex gap-2">
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="closeCurrentModal('Close btn click')"
+      >
+        <i class="bi bi-x-square"></i> Close
+      </button>
+      <button type="submit" class="btn btn-primary" (click)="submitForm()">
+        <i class="bi bi-box-arrow-in-right"></i> Next
+      </button>
+    </div>
+  </div>
+</div>

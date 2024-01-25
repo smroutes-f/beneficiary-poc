@@ -65,6 +65,7 @@ export class AddBeneficiaryComponent {
   }
 
   onSubmit() {
+    console.log("Called");
     this.beneficiariesForm.markAllAsTouched();
 
     console.log(this.beneficiariesForm.value);

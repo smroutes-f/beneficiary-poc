@@ -1,8 +1,10 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   TemplateRef,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import {
   FormArray,
@@ -10,25 +12,26 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import {
   ModalDismissReasons,
-  NgbDatepickerModule, NgbModal, NgbModalConfig,
+  NgbDatepickerModule,
+  NgbModal,
+  NgbModalConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeValidator } from '@app/utils/TypeValidator';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
-import {
-  BeneficiaryTypes
-} from '@app/utils/constants';
+import { BeneficiaryTypes } from '@app/utils/constants';
 import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
 import { ValidatePercentageSum } from '@app/utils/PercentageSumValidator';
 import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
 import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
 import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-beneficiary.component';
+import { ModalComponent } from '@app/components/modal/modal.component';
 
 @Component({
   selector: 'app-home',
@@ -41,23 +44,23 @@ import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-ben
     CapitalizePipe,
     BeneficiaryComponent,
     ReviewPageComponent,
-    AddBeneficiaryComponent
+    AddBeneficiaryComponent,
   ],
   providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
   closeResult = '';
   showReviewPage: boolean = false;
   displayOption: DisplayOption;
+  addBeneficiary!: AddBeneficiaryComponent;
 
   constructor(
     config: NgbModalConfig,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cd: ChangeDetectorRef
   ) {
-
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;
@@ -70,32 +73,33 @@ export class HomeComponent {
           headerText: '&lt;Account&gt; is missing a primary beneficiary',
           description: `Now that you&#039;ve transferred money to this account, let&#039;s make
           sure you secure your assets with a beneficiary. Naming a beneficiary is
-          free and it only takes a few minutes.`
+          free and it only takes a few minutes.`,
         },
         reviewPage: {
-          headerText: 'Dobule check the details before naming your beneficiaries.',
+          headerText:
+            'Dobule check the details before naming your beneficiaries.',
           description: `Please review the information beow for accuracy.It will be used to
-          identify your beneficiaries when you pass away.`
-        }
-      }
-    }
+          identify your beneficiaries when you pass away.`,
+        },
+      },
+    };
   }
 
-  open(content: TemplateRef<any>) {
-    this.modalService
-      .open(content, {
-        ariaLabelledBy: 'modal-basic-title',
-        centered: true,
-        size: 'lg',
-      })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+  open() {
+    const modal = this.modalService.open(ModalComponent, {
+      ariaLabelledBy: 'modal-basic-title',
+      centered: true,
+      size: 'lg',
+    });
+
+    modal.shown.subscribe(() => {
+      this.addBeneficiary = modal.componentInstance.addBeneficiary;
+      
+      modal.componentInstance.closeModal.subscribe((reason: string) => {
+        console.log(reason);
+        modal.close();
+      });
+    });
   }
 
   getDismissReason(reason: any): string {
@@ -119,7 +123,7 @@ export class HomeComponent {
   }
 
   getDisplayOption(): DisplayOptionConfigContent {
-    if(this.displayOption.isReviewPage) {
+    if (this.displayOption.isReviewPage) {
       return this.displayOption.config.reviewPage;
     }
 
