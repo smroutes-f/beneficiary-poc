@@ -1,31 +1,50 @@
-# BeneficiaryPoc
+# Beneficiary Form POC
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.0.
+This Angular project serves as a Proof of Concept (POC) for a Beneficiary Form application. It utilizes Angular's reactive forms, includes form validation features, and incorporates Bootstrap modals for an enhanced user experience.
 
-## Development server
+## Screenshots
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![Screenshot 1](docs/Screenshot1.png)
+*Form Screenshot*
 
-## Code scaffolding
+![Screenshot 2](docs/Screenshot2.png)
+*Review Page*
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Highlights
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 1. Reactive Forms
 
-## Running unit tests
+The project extensively utilizes Angular's Reactive Forms approach to handle complex form scenarios. Reactive forms provide a declarative approach to building forms in Angular, making it easier to manage and manipulate the form state.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 2. Form Validation
 
-## Running end-to-end tests
+Beneficiary Form POC includes robust form validation to ensure data accuracy and completeness. Leveraging Angular's built-in validators, the application ensures that users provide valid and required information during the form submission process.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### 3. Bootstrap Modal
 
-## Further help
+To enhance the user interface, the project integrates Bootstrap modals for a sleek and responsive design. Modals are employed to display additional information, confirmation dialogs, or any other user interactions that benefit from a modal presentation.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Getting Started
 
+Follow these steps to run the Beneficiary Form POC locally:
+
+1. **Clone the Repository:**
+
+```bash
+   git clone https://github.com/your-username/beneficiary-form-poc.git
+   cd beneficiary-form-poc
+```
+
+2. **Install Dependencies**:
+```bash
+   npm install
+```
+
+3. **Run the Application::
+```bash
+   npm start
+```
 
 ## Github Published
 ng build --base-href "https://smroutes-f.github.io/beneficiary-poc/"
