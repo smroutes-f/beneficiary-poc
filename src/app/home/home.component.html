@@ -8,113 +8,13 @@
         to ensure the smooth processing of any potential claims or
         distributions.
       </p>
+      <button
+        class="btn btn-primary btn-lg"
+        type="button"
+        (click)="open()"
+      >
+        Add Beneficiary
+      </button>
     </div>
   </div>
 </div>
-
-<div *ngIf="!showReviewPage">
-  <div class="card">
-    <div class="card-body">
-      <h4 class="modal-title" id="modal-basic-title mb-1">
-        &lt;Account&gt; is missing a primary beneficiary
-      </h4>
-      <p class="fnt-09 mt-1">
-        Now that you&#039;ve transferred money to this account, let&#039;s make
-        sure you secure your assets with a beneficiary. Naming a beneficiary is
-        free and it only takes a few minutes.
-      </p>
-
-      <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
-        <div class="beneficiary-form" formArrayName="beneficiaries">
-          <div *ngFor="let beneficiary of getArrayElements(); let i = index">
-            <div [formGroupName]="i" class="pt-3" [ngClass]="{ 'border-top': i > 0 }">
-              <div
-                class="d-flex justify-content-end position-absolute right-1 gap-2"
-              >
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  *ngIf="beneficiaries.length < 2 && i == beneficiaries.length - 1"
-                  (click)="addNewBeneficiary()"
-                >
-                  <i class="bi bi-plus-circle"></i> Add New
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  *ngIf="beneficiaries.length > 1"
-                  (click)="removeNewBeneficiary(i)"
-                >
-                  <i class="bi bi-trash"></i> Remove
-                </button>
-              </div>
-
-              <app-beneficiary
-                [items]="beneficiary"
-                [fieldIndex]="i"
-              ></app-beneficiary>
-            </div>
-          </div>
-        </div>
-
-        <div class="row border-top pt-2">
-          <div class="col text-center">
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-box-arrow-in-right"></i> Next
-            </button>
-          </div>
-        </div>
-        
-      </form>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="showReviewPage">
-  <div class="card">
-    <div class="card-body">
-      <div class="mb-3">
-        <h3>Dobule check the details before naming your beneficiaries</h3>
-        <p>Please review the information beow for accuracy.It will be used to identify your beneficiaries when you pass away.</p>
-      </div>
-      
-      <div class="row">
-        <div class="col-8">
-          <h5>Primary beneficiary</h5>
-
-          <table class="table table-borderless mb-4" *ngFor="let bData of getReviewData(); let i = index">
-            <tbody>
-              <tr>
-                <td class="float-end">Name</td>
-                <td>{{ getName(bData) }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Relationship</td>
-                <td>{{ bData.type | capitalize }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Percentage assigned</td>
-                <td>{{ bData?.details?.percentageAssigned }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Date of Birth</td>
-                <td>{{ getFormatDate( bData?.details?.dateOfBirth || bData?.details?.established ) }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="row border-top pt-2">
-            <div class="col text-center d-flex gap-2 justify-content-center pl-12">
-              <button class="btn btn-outline-success" (click)="toggleReviewPage(false)">
-                <i class="bi bi-box-arrow-in-left"></i> Back
-              </button>
-              <button class="btn btn-success" (click)="finalFormSubmit()">Submit</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-

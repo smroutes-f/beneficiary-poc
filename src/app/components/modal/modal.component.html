@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <div style="flex-direction: column">
+    <h4
+      class="modal-title"
+      id="modal-basic-title mb-1"
+      [innerHTML]="getDisplayOption().headerText"
+    ></h4>
+    <p class="fnt-09 mt-1" [innerHTML]="getDisplayOption().description"></p>
+  </div>
+
+  <button
+    type="button"
+    class="btn-close cls-btn"
+    aria-label="Close"
+    (click)="closeCurrentModal('Cross click')"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <app-add-beneficiary
+    #addBeneficiary
+    [defaultValue]="formValues"
+    *ngIf="!displayOption.isReviewPage"
+  ></app-add-beneficiary>
+
+  <app-review-page
+    [reviewData]="getReviewData()"
+    (backButtonClicked)="toggleReviewPage(false)"
+    *ngIf="displayOption.isReviewPage"
+  ></app-review-page>
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col text-center">
+      <div class="d-flex gap-2" *ngIf="!displayOption.isReviewPage">
+        <button
+          type="submit"
+          class="btn btn-outline-dark"
+          (click)="closeCurrentModal('Close btn click')"
+        >
+          <i class="bi bi-x-square"></i> Close
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="submitForm()">
+          <i class="bi bi-box-arrow-in-right"></i> Next
+        </button>
+      </div>
+
+      <div class="d-flex gap-2" *ngIf="displayOption.isReviewPage">
+        <button
+          class="btn btn-outline-success"
+          (click)="toggleReviewPage(false)"
+        >
+          <i class="bi bi-box-arrow-in-left"></i> Back
+        </button>
+        <button class="btn btn-success" (click)="finalFormSubmit()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
