@@ -1,16 +1,8 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
-  Component,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef,
+  Component
 } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -23,13 +15,9 @@ import {
   NgbModalConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import { TypeValidator } from '@app/utils/TypeValidator';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
-import { BeneficiaryTypes } from '@app/utils/constants';
 import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
-import { ValidatePercentageSum } from '@app/utils/PercentageSumValidator';
 import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
-import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
 import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-beneficiary.component';
 import { ModalComponent } from '@app/components/modal/modal.component';
 
@@ -42,7 +30,6 @@ import { ModalComponent } from '@app/components/modal/modal.component';
     ReactiveFormsModule,
     CommonModule,
     CapitalizePipe,
-    BeneficiaryComponent,
     ReviewPageComponent,
     AddBeneficiaryComponent,
   ],
@@ -51,7 +38,6 @@ import { ModalComponent } from '@app/components/modal/modal.component';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  closeResult = '';
   showReviewPage: boolean = false;
   displayOption: DisplayOption;
   addBeneficiary!: AddBeneficiaryComponent;

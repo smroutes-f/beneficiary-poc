@@ -16,7 +16,6 @@ import { TypeValidator } from '@app/utils/TypeValidator';
 import { BeneficiaryTypes } from '@app/utils/constants';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 
-import { BeneficiaryComponent } from '../beneficiary/beneficiary.component';
 import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
 
 @Component({
@@ -27,8 +26,7 @@ import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
     FormsModule,
     CapitalizePipe,
     NgbDatepickerModule,
-    ReactiveFormsModule,
-    BeneficiaryComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './add-beneficiary.component.html',
   styleUrl: './add-beneficiary.component.scss',
