@@ -52,3 +52,5 @@ export function formatCustomDate(date: DateInfo): string {
 
   return formattedDate.format('MMM D, YYYY');
 }
+
+export type MonthEntry = [string, string];

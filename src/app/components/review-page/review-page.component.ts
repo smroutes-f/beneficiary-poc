@@ -8,6 +8,7 @@ import {
 } from '@app/utils/common';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 import { CommonModule } from '@angular/common';
+import { BeneficiaryTypes } from '@app/utils/constants';
 
 @Component({
   selector: 'app-review-page',
@@ -51,5 +52,13 @@ export class ReviewPageComponent {
 
     const HumanData = info.details as HumarnBeneficiaryFormData;
     return formatCustomDate(HumanData.dateOfBirth);
+  }
+
+  getDateCaption(type: string): string {
+    if(type === BeneficiaryTypes.NON_SPOUSE) {
+      return 'Date of established';
+    }
+
+    return 'Date of birth';
   }
 }

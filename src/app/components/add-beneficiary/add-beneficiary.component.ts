@@ -13,11 +13,13 @@ import {
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { ValidatePercentageSum } from '@app/utils/PercentageSumValidator';
 import { TypeValidator } from '@app/utils/TypeValidator';
-import { BeneficiaryTypes } from '@app/utils/constants';
+import { BeneficiaryTypes, MonthsObject } from '@app/utils/constants';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 
 import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
-import { BeneficiaryFormData } from '@app/utils/common';
+import { BeneficiaryFormData, MonthEntry } from '@app/utils/common';
+import { DayValidator } from '@app/utils/DayValidator';
+import { YearValidator } from '@app/utils/YearValidator';
 
 @Component({
   selector: 'app-add-beneficiary',
@@ -35,6 +37,7 @@ import { BeneficiaryFormData } from '@app/utils/common';
 export class AddBeneficiaryComponent implements OnInit {
   beneficiariesForm: FormGroup;
   allBeneficiaryTypes: string[];
+  months: Array<MonthEntry> = Object.entries(MonthsObject);
 
   @Input() defaultValue: BeneficiaryFormData = [];
 
@@ -153,7 +156,11 @@ export class AddBeneficiaryComponent implements OnInit {
         firstName: ['', Validators.required],
         middleName: [],
         lastName: ['', Validators.required],
-        dateOfBirth: ['', Validators.required],
+        dateOfBirth: this.fb.group({
+          month: [null, Validators.required],
+          day: ['', [Validators.required, DayValidator() ]],
+          year: ['', [Validators.required, YearValidator(1900, (new Date()).getFullYear())]]
+        }),
         percentageAssigned: [
           this.getInitialPaValue(),
           [Validators.required, GreaterThanZeroValidator()],
@@ -171,7 +178,11 @@ export class AddBeneficiaryComponent implements OnInit {
       'details',
       this.fb.group({
         trustName: ['', Validators.required],
-        established: ['', Validators.required],
+        established: this.fb.group({
+          month: [null, Validators.required],
+          day: ['', [Validators.required, DayValidator() ]],
+          year: ['', [Validators.required, YearValidator(1900, (new Date()).getFullYear())]]
+        }),
         percentageAssigned: [
           this.getInitialPaValue(),
           [Validators.required, , GreaterThanZeroValidator()],
@@ -221,7 +232,7 @@ export class AddBeneficiaryComponent implements OnInit {
       return 'Please add a value greater than 0.';
     }
 
-    return '';
+    return 'Please add the percentage assigned.';
   }
 
   getBeneficiariesCount() {

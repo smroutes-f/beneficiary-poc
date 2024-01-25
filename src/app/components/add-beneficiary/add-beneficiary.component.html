@@ -5,7 +5,7 @@
         <div
           [formGroupName]="i"
           class="pt-3"
-          [ngClass]="{ 'border-top': i > 0 }"
+          [ngClass]="{ 'border-top mt-3': i > 0 }"
         >
           <div
             class="d-flex justify-content-end position-absolute right-1 gap-2"
@@ -61,14 +61,16 @@
           </div>
 
           <div formGroupName="details" *ngIf="isFieldAvailable('details', i)">
-
-            <div class="human-benificiary" *ngIf="checkType(i, 'SPOUSE, NON_SPOUSE')">
+            <div
+              class="human-benificiary"
+              *ngIf="checkType(i, 'SPOUSE, NON_SPOUSE')"
+            >
               <div class="row">
                 <div class="col-4">
                   <label class="form-label fw-semibold">Full Name</label>
                 </div>
               </div>
-          
+
               <div class="row mb-3">
                 <div class="col">
                   <label [for]="'firstName' + i" class="form-label fnt-09"
@@ -117,38 +119,76 @@
                   <div class="invalid-feedback">Please add the last name.</div>
                 </div>
               </div>
-          
-              <div class="row mb-3">
+
+              <div class="row">
                 <div class="col-4">
-                  <label [for]="'dateOfBirth' + i" class="form-label fw-semibold"
-                    >Date of birth</label
+                  <label class="form-label fw-semibold">Date of birth</label>
+                </div>
+              </div>
+
+              <div class="row mb-3" formGroupName="dateOfBirth">
+                <div class="col">
+                  <label [for]="'month' + i" class="form-label fnt-09"
+                    >Month</label
                   >
-                  <div class="input-group">
-                    <input
-                      [id]="'dateOfBirth' + i"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': isInValidField('details.dateOfBirth', i),
-                        'is-valid': isValidField('details.dateOfBirth', i)
-                      }"
-                      placeholder="yyyy-mm-dd"
-                      ngbDatepicker
-                      #dp="ngbDatepicker"
-                      formControlName="dateOfBirth"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="dp.toggle()"
-                      type="button"
-                    ></button>
-                    <div class="invalid-feedback">Please add the last name.</div>
-                  </div>
+                  <select
+                    class="form-select"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.dateOfBirth.month', i),
+                      'is-valid': isValidField('details.dateOfBirth.month', i)
+                    }"
+                    aria-label="Select month"
+                    formControlName="month"
+                    [id]="'month' + i"
+                  >
+                    <option [value]="null">Select Month</option>
+                    <option
+                      *ngFor="let option of months"
+                      [value]="option[0]"
+                    >
+                      {{ option[1] | capitalize }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">Please add month.</div>
+                </div>
+                <div class="col">
+                  <label [for]="'day' + i" class="form-label fnt-09"
+                    >Day</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.dateOfBirth.day', i),
+                      'is-valid': isValidField('details.dateOfBirth.day', i)
+                    }"
+                    [id]="'day' + i"
+                    placeholder="ex: 12"
+                    formControlName="day"
+                  />
+                  <div class="invalid-feedback">Invalid day.</div>
+                </div>
+                <div class="col">
+                  <label [for]="'year' + i" class="form-label fnt-09"
+                    >Year</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.dateOfBirth.year', i),
+                      'is-valid': isValidField('details.dateOfBirth.year', i)
+                    }"
+                    [id]="'year' + i"
+                    placeholder="ex: 2012"
+                    formControlName="year"
+                  />
+                  <div class="invalid-feedback">Invalid year.</div>
                 </div>
               </div>
             </div>
 
             <div class="trust-benificiary" *ngIf="checkType(i, 'TRUST')">
-
               <div class="row mb-3">
                 <div class="col-6">
                   <label [for]="'trustName' + i" class="form-label fnt-09"
@@ -168,62 +208,108 @@
                   <div class="invalid-feedback">Please add the trust name.</div>
                 </div>
               </div>
-          
-              <div class="row mb-3">
+
+              <div class="row">
                 <div class="col-4">
-                  <label [for]="'established' + i" class="form-label fw-semibold"
-                    >Date of established</label
+                  <label class="form-label fw-semibold">Date of established</label>
+                </div>
+              </div>
+
+              <div class="row mb-3" formGroupName="established">
+                <div class="col">
+                  <label [for]="'month' + i" class="form-label fnt-09"
+                    >Month</label
                   >
-                  <div class="input-group">
-                    <input
-                      [id]="'established' + i"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': isInValidField('details.established', i),
-                        'is-valid': isValidField('details.established', i)
-                      }"
-                      placeholder="yyyy-mm-dd"
-                      ngbDatepicker
-                      #dp="ngbDatepicker"
-                      formControlName="established"
-                    />
-                    <button
-                      class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="dp.toggle()"
-                      type="button"
-                    ></button>
-                    <div class="invalid-feedback">Please add the date of established.</div>
-                  </div>
+                  <select
+                    class="form-select"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.established.month', i),
+                      'is-valid': isValidField('details.established.month', i)
+                    }"
+                    aria-label="Select month"
+                    formControlName="month"
+                    [id]="'month' + i"
+                  >
+                    <option [value]="null">Select Month</option>
+                    <option
+                      *ngFor="let option of months"
+                      [value]="option[0]"
+                    >
+                      {{ option[1] | capitalize }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">Please add month.</div>
+                </div>
+                <div class="col">
+                  <label [for]="'day' + i" class="form-label fnt-09"
+                    >Day</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.established.day', i),
+                      'is-valid': isValidField('details.established.day', i)
+                    }"
+                    [id]="'day' + i"
+                    placeholder="ex: 12"
+                    formControlName="day"
+                  />
+                  <div class="invalid-feedback">Invalid Day.</div>
+                </div>
+                <div class="col">
+                  <label [for]="'year' + i" class="form-label fnt-09"
+                    >Year</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('details.established.year', i),
+                      'is-valid': isValidField('details.established.year', i)
+                    }"
+                    [id]="'year' + i"
+                    placeholder="ex: 2012"
+                    formControlName="year"
+                  />
+                  <div class="invalid-feedback">Invalid year.</div>
                 </div>
               </div>
             </div>
-        
+
             <div class="row" *ngIf="getBeneficiariesCount() > 1">
               <div class="col">
                 <div class="form-group">
-                  <label [for]="'percentageAssigned' + i" class="form-label fw-semibold"
+                  <label
+                    [for]="'percentageAssigned' + i"
+                    class="form-label fw-semibold"
                     >Percentage assigned</label
                   >
                   <input
                     type="number"
                     class="form-control mw-14rem"
                     [ngClass]="{
-                        'is-invalid': isInValidField('details.percentageAssigned', i),
-                        'is-valid': isValidField('details.percentageAssigned', i)
-                      }"
+                      'is-invalid': isInValidField(
+                        'details.percentageAssigned',
+                        i
+                      ),
+                      'is-valid': isValidField('details.percentageAssigned', i)
+                    }"
                     [id]="'percentageAssigned' + i"
                     aria-describedby="percentageAssignedHelp"
                     placeholder="100%"
                     formControlName="percentageAssigned"
                   />
-                  <small id="percentageAssignedHelp" class="form-text text-muted">
-                    Total percentage assigned must equal 100% if you have multiple
-                    beneficiaries
+                  <small
+                    id="percentageAssignedHelp"
+                    class="form-text text-muted"
+                  >
+                    Total percentage assigned must equal 100% if you have
+                    multiple beneficiaries
                   </small>
                   <div class="invalid-feedback">
-                    {{ getErrorMessages('percentageAssigned', i) }}
+                    {{ getErrorMessages("percentageAssigned", i) }}
                   </div>
-            
                 </div>
               </div>
             </div>

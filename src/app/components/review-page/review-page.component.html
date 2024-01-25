@@ -20,7 +20,7 @@
           <td>{{ bData?.details?.percentageAssigned }}</td>
         </tr>
         <tr>
-          <td class="float-end">Date of Birth</td>
+          <td class="float-end">{{ getDateCaption(bData.type) }}</td>
           <td>
             {{ getFormatDate(bData) }}
           </td>
