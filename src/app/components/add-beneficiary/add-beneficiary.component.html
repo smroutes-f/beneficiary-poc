@@ -28,10 +28,163 @@
             </button>
           </div>
 
-          <app-beneficiary
+          <!-- <app-beneficiary
                 [items]="beneficiary"
-                [fieldIndex]="i"
-              ></app-beneficiary>
+                [i]="i"
+              ></app-beneficiary> -->
+
+          <div class="row">
+            <div class="mb-3 col-4">
+              <label
+                [for]="'PrimaryBeneficiary' + i"
+                class="form-label fw-semibold"
+                >Primary beneficiary</label
+              >
+              <select
+                class="form-select"
+                [ngClass]="{
+                  'is-invalid': isInValidField('type', i),
+                  'is-valid': isValidField('type', i)
+                }"
+                aria-label="Default select example"
+                formControlName="type"
+                (change)="onSelectChange($event, i)"
+                [id]="'PrimaryBeneficiary' + i"
+              >
+                <option [value]="null">Please select</option>
+                <option
+                  *ngFor="let option of allBeneficiaryTypes"
+                  [value]="option"
+                >
+                  {{ option | capitalize }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                Please choose the beneficiary type.
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="details" *ngIf="isFieldAvailable('details', i)">
+
+            <div class="human-benificiary" *ngIf="checkType(i, 'SPOUSE, NON_SPOUSE')">
+              <div class="row">
+                <div class="col-4">
+                  <label class="form-label fw-semibold">Full Name</label>
+                </div>
+              </div>
+          
+              <div class="row mb-3">
+                <div class="col">
+                  <label [for]="'firstName' + i" class="form-label fnt-09"
+                    >First name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('firstName', i),
+                      'is-valid': isValidField('firstName', i)
+                    }"
+                    [id]="'firstName' + i"
+                    placeholder="John"
+                    formControlName="firstName"
+                  />
+                  <div class="invalid-feedback">Please add date of birth.</div>
+                </div>
+                <div class="col">
+                  <label [for]="'middleName' + i" class="form-label fnt-09"
+                    >Middle name (optional)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [id]="'middleName' + i"
+                    placeholder="Miller"
+                    formControlName="middleName"
+                  />
+                </div>
+                <div class="col">
+                  <label [for]="'lastName' + i" class="form-label fnt-09"
+                    >Last name</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [ngClass]="{
+                      'is-invalid': isInValidField('lastName', i),
+                      'is-valid': isValidField('lastName', i)
+                    }"
+                    [id]="'lastName' + i"
+                    placeholder="Doe"
+                    formControlName="lastName"
+                  />
+                  <div class="invalid-feedback">Please add the last name.</div>
+                </div>
+              </div>
+          
+              <div class="row mb-3">
+                <div class="col-4">
+                  <label [for]="'dateOfBirth' + i" class="form-label fw-semibold"
+                    >Date of birth</label
+                  >
+                  <div class="input-group">
+                    <input
+                      [id]="'dateOfBirth' + i"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid': isInValidField('dateOfBirth', i),
+                        'is-valid': isValidField('dateOfBirth', i)
+                      }"
+                      placeholder="yyyy-mm-dd"
+                      ngbDatepicker
+                      #dp="ngbDatepicker"
+                      formControlName="dateOfBirth"
+                    />
+                    <button
+                      class="btn btn-outline-secondary bi bi-calendar3"
+                      (click)="dp.toggle()"
+                      type="button"
+                    ></button>
+                    <div class="invalid-feedback">Please add the last name.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="trust-benificiary" *ngIf="checkType(i, 'TRUST')"></div>
+            
+        
+            <div class="row" *ngIf="getBeneficiariesCount() > 1">
+              <div class="col">
+                <div class="form-group">
+                  <label [for]="'percentageAssigned' + i" class="form-label fw-semibold"
+                    >Percentage assigned</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control mw-14rem"
+                    [ngClass]="{
+                        'is-invalid': isInValidField('percentageAssigned', i),
+                        'is-valid': isValidField('percentageAssigned', i)
+                      }"
+                    [id]="'percentageAssigned' + i"
+                    aria-describedby="percentageAssignedHelp"
+                    placeholder="100%"
+                    formControlName="percentageAssigned"
+                  />
+                  <small id="percentageAssignedHelp" class="form-text text-muted">
+                    Total percentage assigned must equal 100% if you have multiple
+                    beneficiaries
+                  </small>
+                  <div class="invalid-feedback">
+                    {{ getErrorMessages('percentageAssigned', i) }}
+                  </div>
+            
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
