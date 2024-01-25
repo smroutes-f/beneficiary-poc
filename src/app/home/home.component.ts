@@ -1,22 +1,22 @@
 import {
   Component,
+  TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
+  ReactiveFormsModule
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import {
-  NgbDatepickerModule,
+  ModalDismissReasons,
+  NgbDatepickerModule, NgbModal, NgbModalConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeValidator } from '@app/utils/TypeValidator';
@@ -25,7 +25,9 @@ import {
   BeneficiaryTypes
 } from '@app/utils/constants';
 import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
-import { DateInfo, formatCustomDate } from '@app/utils/common';
+import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
+import { ValidatePercentageSum } from '@app/utils/PercentageSumValidator';
+import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
 
 @Component({
   selector: 'app-home',
@@ -36,9 +38,10 @@ import { DateInfo, formatCustomDate } from '@app/utils/common';
     ReactiveFormsModule,
     CommonModule,
     BeneficiaryComponent,
-    CapitalizePipe
+    CapitalizePipe,
+    ReviewPageComponent
   ],
-  providers: [],
+  providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -50,16 +53,68 @@ export class HomeComponent {
   beneficiariesForm: FormGroup;
   otherFields: Array<any> = [];
   showReviewPage: boolean = false;
+  displayOption: DisplayOption;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    config: NgbModalConfig,
+    private modalService: NgbModal
   ) {
 
     this.beneficiariesForm = this.fb.group({
       beneficiaries: this.fb.array(
         [ this.getPrimaryBeneficiaryFields()],
-        { validators: [ this.validatePercentageSum] }),
+        { validators: [ ValidatePercentageSum() ] }),
     });
+
+    // customize default values of modals used by this component tree
+    config.backdrop = 'static';
+    config.keyboard = false;
+
+    this.displayOption = {
+      isReviewPage: false,
+      config: {
+        inputPage: {
+          headerText: '&lt;Account&gt; is missing a primary beneficiary',
+          description: `Now that you&#039;ve transferred money to this account, let&#039;s make
+          sure you secure your assets with a beneficiary. Naming a beneficiary is
+          free and it only takes a few minutes.`
+        },
+        reviewPage: {
+          headerText: 'Dobule check the details before naming your beneficiaries.',
+          description: `Please review the information beow for accuracy.It will be used to
+          identify your beneficiaries when you pass away.`
+        }
+      }
+    }
+  }
+
+  open(content: TemplateRef<any>) {
+    this.modalService
+      .open(content, {
+        ariaLabelledBy: 'modal-basic-title',
+        centered: true,
+        size: 'lg',
+      })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  getDismissReason(reason: any): string {
+    switch (reason) {
+      case ModalDismissReasons.ESC:
+        return 'by pressing ESC';
+      case ModalDismissReasons.BACKDROP_CLICK:
+        return 'by clicking on a backdrop';
+      default:
+        return `with: ${reason}`;
+    }
   }
 
   getPrimaryBeneficiaryFields() {
@@ -103,59 +158,19 @@ export class HomeComponent {
     this.updatePaValue();
   }
 
-  private validatePercentageSum(control: AbstractControl): ValidationErrors | null {
-    const beneficiariesArray = control as FormArray;
-    const percentages = beneficiariesArray.controls.map(beneficiary =>
-      beneficiary.get('details.percentageAssigned') as FormControl
-    ).filter(el => !!el);
-
-    const sum = percentages.reduce((acc, curr) => acc + (curr.value || 0), 0);
-
-    if (sum !== 100) {
-      percentages.forEach(control => {
-        control.setErrors({ invalidPercentageSum: true });
-        control.markAsTouched(); // Mark the control as touched
-      });
-      
-      return { invalidPercentageSum: true };
-    }
-
-    control.setErrors(null); // Clear the error if the sum is valid
-    beneficiariesArray.controls.forEach(beneficiary => {
-      beneficiary.get('details.percentageAssigned')?.setErrors(null);
-    });
-    return null;
-  }
-
   getReviewData() {
     return this.beneficiaries.value;
-  }
-
-  getName(info: any): string {
-    if (info.type === 'TRUST') {
-      return info?.details?.trustName ?? 'Trust Name Not Available';
-    }
-  
-    const firstName = info?.details?.firstName ?? '';
-    const middleName = info?.details?.middleName ?? '';
-    const lastName = info?.details?.lastName ?? '';
-  
-    // Joining the names with a space and filtering out empty strings
-    const fullName = [firstName, middleName, lastName].filter(name => name.trim() !== '').join(' ');
-  
-    return fullName !== '' ? fullName : 'Name Not Available';
-  }
-
-  getFormatDate(date: DateInfo): string| null {
-    if(!date) return null;
-    return formatCustomDate(date);
   }
 
   toggleReviewPage(value: boolean): void {
     this.showReviewPage = value;
   }
 
-  finalFormSubmit() {
-    alert("Form submitted..");
+  getDisplayOption(): DisplayOptionConfigContent {
+    if(this.displayOption.isReviewPage) {
+      return this.displayOption.config.reviewPage;
+    }
+
+    return this.displayOption.config.inputPage;
   }
 }

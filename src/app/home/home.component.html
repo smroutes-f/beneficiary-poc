@@ -1,3 +1,36 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <div style="flex-direction: column">
+      <h4
+        class="modal-title"
+        id="modal-basic-title mb-1"
+        [innerHTML]="getDisplayOption().headerText"
+      ></h4>
+      <p class="fnt-09 mt-1" [innerHTML]="getDisplayOption().description"></p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close cls-btn"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">Hello World</div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
+
 <div class="d-flex justify-content-center align-items-center mt-4">
   <div class="p-2 mb-4 bg-light rounded-3">
     <div class="container-fluid py-5">
@@ -8,6 +41,13 @@
         to ensure the smooth processing of any potential claims or
         distributions.
       </p>
+      <button
+        class="btn btn-primary btn-lg"
+        type="button"
+        (click)="open(content)"
+      >
+        Add Beneficiary
+      </button>
     </div>
   </div>
 </div>
@@ -27,14 +67,20 @@
       <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="beneficiary-form" formArrayName="beneficiaries">
           <div *ngFor="let beneficiary of getArrayElements(); let i = index">
-            <div [formGroupName]="i" class="pt-3" [ngClass]="{ 'border-top': i > 0 }">
+            <div
+              [formGroupName]="i"
+              class="pt-3"
+              [ngClass]="{ 'border-top': i > 0 }"
+            >
               <div
                 class="d-flex justify-content-end position-absolute right-1 gap-2"
               >
                 <button
                   type="button"
                   class="btn btn-light"
-                  *ngIf="beneficiaries.length < 2 && i == beneficiaries.length - 1"
+                  *ngIf="
+                    beneficiaries.length < 2 && i == beneficiaries.length - 1
+                  "
                   (click)="addNewBeneficiary()"
                 >
                   <i class="bi bi-plus-circle"></i> Add New
@@ -64,57 +110,11 @@
             </button>
           </div>
         </div>
-        
       </form>
     </div>
   </div>
 </div>
 
 <div *ngIf="showReviewPage">
-  <div class="card">
-    <div class="card-body">
-      <div class="mb-3">
-        <h3>Dobule check the details before naming your beneficiaries</h3>
-        <p>Please review the information beow for accuracy.It will be used to identify your beneficiaries when you pass away.</p>
-      </div>
-      
-      <div class="row">
-        <div class="col-8">
-          <h5>Primary beneficiary</h5>
-
-          <table class="table table-borderless mb-4" *ngFor="let bData of getReviewData(); let i = index">
-            <tbody>
-              <tr>
-                <td class="float-end">Name</td>
-                <td>{{ getName(bData) }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Relationship</td>
-                <td>{{ bData.type | capitalize }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Percentage assigned</td>
-                <td>{{ bData?.details?.percentageAssigned }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Date of Birth</td>
-                <td>{{ getFormatDate( bData?.details?.dateOfBirth || bData?.details?.established ) }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="row border-top pt-2">
-            <div class="col text-center d-flex gap-2 justify-content-center pl-12">
-              <button class="btn btn-outline-success" (click)="toggleReviewPage(false)">
-                <i class="bi bi-box-arrow-in-left"></i> Back
-              </button>
-              <button class="btn btn-success" (click)="finalFormSubmit()">Submit</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-review-page [reviewData]="getReviewData()" (backButtonClicked)="toggleReviewPage(false)"></app-review-page>
 </div>
-
-
