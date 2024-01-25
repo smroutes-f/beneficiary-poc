@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 import {
   FormsModule,
@@ -35,7 +36,7 @@ import { ModalComponent } from '@app/components/modal/modal.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   showReviewPage: boolean = false;
   addBeneficiary!: AddBeneficiaryComponent;
 
@@ -48,6 +49,10 @@ export class HomeComponent {
     config.backdrop = 'static';
     config.keyboard = false;
     config.scrollable = true;
+  }
+
+  ngOnInit(): void {
+    this.open();
   }
 
   open() {
