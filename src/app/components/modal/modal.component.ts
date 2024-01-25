@@ -54,13 +54,14 @@ export class ModalComponent {
   }
 
   submitForm(): void {
-    this.addBeneficiary?.onSubmit();
-
-    if(this.addBeneficiary.beneficiariesForm.valid) {
-      const t = this.addBeneficiary.beneficiariesForm.value;
-      this.formValues = t.beneficiaries;
+    try {
+      const formValue = this.addBeneficiary.onSubmit();
+      this.formValues = formValue.beneficiaries;
       this.toggleReviewPage(true);
     }
+    catch(err) {
+      console.log(err);
+    } 
   }
 
   getReviewData() {

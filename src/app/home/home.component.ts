@@ -9,14 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 
 import {
-  ModalDismissReasons,
   NgbDatepickerModule,
   NgbModal,
   NgbModalConfig,
 } from '@ng-bootstrap/ng-bootstrap';
 
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
-import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
 import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
 import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-beneficiary.component';
 import { ModalComponent } from '@app/components/modal/modal.component';
@@ -39,7 +37,6 @@ import { ModalComponent } from '@app/components/modal/modal.component';
 })
 export class HomeComponent {
   showReviewPage: boolean = false;
-  displayOption: DisplayOption;
   addBeneficiary!: AddBeneficiaryComponent;
 
   constructor(
@@ -51,24 +48,6 @@ export class HomeComponent {
     config.backdrop = 'static';
     config.keyboard = false;
     config.scrollable = true;
-
-    this.displayOption = {
-      isReviewPage: false,
-      config: {
-        inputPage: {
-          headerText: '&lt;Account&gt; is missing a primary beneficiary',
-          description: `Now that you&#039;ve transferred money to this account, let&#039;s make
-          sure you secure your assets with a beneficiary. Naming a beneficiary is
-          free and it only takes a few minutes.`,
-        },
-        reviewPage: {
-          headerText:
-            'Dobule check the details before naming your beneficiaries.',
-          description: `Please review the information beow for accuracy.It will be used to
-          identify your beneficiaries when you pass away.`,
-        },
-      },
-    };
   }
 
   open() {
@@ -85,33 +64,5 @@ export class HomeComponent {
         modal.close();
       });
     });
-  }
-
-  getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
-    }
-  }
-
-  getReviewData() {
-    return null;
-  }
-
-  toggleReviewPage(value: boolean): void {
-    this.showReviewPage = value;
-    this.displayOption.isReviewPage = value;
-  }
-
-  getDisplayOption(): DisplayOptionConfigContent {
-    if (this.displayOption.isReviewPage) {
-      return this.displayOption.config.reviewPage;
-    }
-
-    return this.displayOption.config.inputPage;
   }
 }

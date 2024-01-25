@@ -60,8 +60,7 @@ export class AddBeneficiaryComponent implements OnInit {
         else {
           this.setHumanBeneficiaryFormFields(i);
         }
-      })
-
+      });
 
       this.beneficiaries.patchValue(this.defaultValue);
       this.beneficiariesForm.markAllAsTouched();
@@ -100,13 +99,15 @@ export class AddBeneficiaryComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(): { beneficiaries: BeneficiaryFormData} {
     this.beneficiariesForm.markAllAsTouched();
 
     console.log(this.beneficiariesForm.value);
-    if (this.beneficiariesForm.valid) {
-      // this.showReviewPage = true;
+    if(this.beneficiariesForm.valid) {
+      return this.beneficiariesForm.value;
     }
+
+    throw new Error("Invalid form data.");
   }
 
   onSelectChange(event: Event, index: number) {
