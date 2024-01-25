@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "publish": "ng build --base-href 'https://smroutes-f.github.io/beneficiary-poc/' && npx angular-cli-ghpages --dir=dist/beneficiary-poc/browser"
   },
   "private": true,
   "dependencies": {
