@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -17,6 +17,7 @@ import { BeneficiaryTypes } from '@app/utils/constants';
 import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 
 import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
+import { BeneficiaryFormData } from '@app/utils/common';
 
 @Component({
   selector: 'app-add-beneficiary',
@@ -31,9 +32,11 @@ import { GreaterThanZeroValidator } from '@app/utils/GreaterThanZeroValidator';
   templateUrl: './add-beneficiary.component.html',
   styleUrl: './add-beneficiary.component.scss',
 })
-export class AddBeneficiaryComponent {
+export class AddBeneficiaryComponent implements OnInit {
   beneficiariesForm: FormGroup;
   allBeneficiaryTypes: string[];
+
+  @Input() defaultValue: BeneficiaryFormData = [];
 
   constructor(private fb: FormBuilder) {
     this.beneficiariesForm = this.fb.group({
@@ -43,6 +46,26 @@ export class AddBeneficiaryComponent {
     });
 
     this.allBeneficiaryTypes = Array.from(Object.values(BeneficiaryTypes));
+  }
+
+  ngOnInit(): void {
+    if(this.defaultValue !== null && this.defaultValue.length > 0) {
+      this.defaultValue.forEach((el, i) => {
+        if(this.beneficiaries.length < (i + 1)) {
+          this.beneficiaries.push(this.getPrimaryBeneficiaryFields());
+        }
+        if(el.type === BeneficiaryTypes.TRUST) {
+          this.setTrustBeneficiaryFormFields(i);
+        }
+        else {
+          this.setHumanBeneficiaryFormFields(i);
+        }
+      })
+
+
+      this.beneficiaries.patchValue(this.defaultValue);
+      this.beneficiariesForm.markAllAsTouched();
+    }
   }
 
   get beneficiaries(): FormArray {
@@ -78,7 +101,6 @@ export class AddBeneficiaryComponent {
   }
 
   onSubmit() {
-    console.log('Called');
     this.beneficiariesForm.markAllAsTouched();
 
     console.log(this.beneficiariesForm.value);
@@ -194,5 +216,16 @@ export class AddBeneficiaryComponent {
     }
 
     return false;
+  }
+
+  updateFromValue(values: BeneficiaryFormData): void {
+    if(values === null) return;
+
+    this.beneficiaries.patchValue(values);
+    this.markAllField();
+  }
+
+  markAllField(): void {
+    this.beneficiariesForm.markAllAsTouched();
   }
 }

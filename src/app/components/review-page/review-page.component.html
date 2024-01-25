@@ -1,59 +1,31 @@
-<div class="card">
-    <div class="card-body">
-      <div class="mb-3">
-        <h3>Dobule check the details before naming your beneficiaries</h3>
-        <p>
-          Please review the information beow for accuracy.It will be used to
-          identify your beneficiaries when you pass away.
-        </p>
-      </div>
+<div class="row">
+  <div class="col-8">
+    <h5>Primary beneficiary</h5>
 
-      <div class="row">
-        <div class="col-8">
-          <h5>Primary beneficiary</h5>
-
-          <table
-            class="table table-borderless mb-4"
-            *ngFor="let bData of reviewData; let i = index"
-          >
-            <tbody>
-              <tr>
-                <td class="float-end">Name</td>
-                <td>{{ getName(bData) }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Relationship</td>
-                <td>{{ bData.type | capitalize }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Percentage assigned</td>
-                <td>{{ bData?.details?.percentageAssigned }}</td>
-              </tr>
-              <tr>
-                <td class="float-end">Date of Birth</td>
-                <td>
-                  {{ getFormatDate(bData) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="row border-top pt-2">
-            <div
-              class="col text-center d-flex gap-2 justify-content-center pl-12"
-            >
-              <button
-                class="btn btn-outline-success"
-                (click)="goBack()"
-              >
-                <i class="bi bi-box-arrow-in-left"></i> Back
-              </button>
-              <button class="btn btn-success" (click)="finalFormSubmit()">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <table
+      class="table table-borderless mb-4"
+      *ngFor="let bData of reviewData; let i = index"
+    >
+      <tbody>
+        <tr>
+          <td class="float-end">Name</td>
+          <td>{{ getName(bData) }}</td>
+        </tr>
+        <tr>
+          <td class="float-end">Relationship</td>
+          <td>{{ bData.type | capitalize }}</td>
+        </tr>
+        <tr>
+          <td class="float-end">Percentage assigned</td>
+          <td>{{ bData?.details?.percentageAssigned }}</td>
+        </tr>
+        <tr>
+          <td class="float-end">Date of Birth</td>
+          <td>
+            {{ getFormatDate(bData) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>

@@ -1,19 +1,22 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
+import { CommonModule } from '@angular/common';
+
+import { BeneficiaryFormData, DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-beneficiary.component';
-
+import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [AddBeneficiaryComponent],
+  imports: [AddBeneficiaryComponent, CommonModule, ReviewPageComponent],
   providers: [NgbModal],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
+
+  formValues: BeneficiaryFormData = [];
   displayOption: DisplayOption;
 
   @Output() closeModal = new EventEmitter<string>();
@@ -52,5 +55,24 @@ export class ModalComponent {
 
   submitForm(): void {
     this.addBeneficiary?.onSubmit();
+
+    if(this.addBeneficiary.beneficiariesForm.valid) {
+      const t = this.addBeneficiary.beneficiariesForm.value;
+      this.formValues = t.beneficiaries;
+      this.toggleReviewPage(true);
+    }
+  }
+
+  getReviewData() {
+    if(!this.formValues) return [];
+    return this.formValues || [];
+  }
+
+  toggleReviewPage(value: boolean): void {
+    this.displayOption.isReviewPage = value;
+  }
+
+  finalFormSubmit() {
+    alert("Form Submit.");
   }
 }

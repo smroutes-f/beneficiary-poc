@@ -82,7 +82,6 @@ export class HomeComponent {
       this.addBeneficiary = modal.componentInstance.addBeneficiary;
       
       modal.componentInstance.closeModal.subscribe((reason: string) => {
-        console.log(reason);
         modal.close();
       });
     });
