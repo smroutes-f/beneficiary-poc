@@ -27,7 +27,7 @@ import { BeneficiaryFormData } from '@app/utils/common';
     FormsModule,
     CapitalizePipe,
     NgbDatepickerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './add-beneficiary.component.html',
   styleUrl: './add-beneficiary.component.scss',
@@ -49,14 +49,15 @@ export class AddBeneficiaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.defaultValue !== null && this.defaultValue.length > 0) {
+    if (this.defaultValue !== null && this.defaultValue.length > 0) {
       this.defaultValue.forEach((el, i) => {
-        if(this.beneficiaries.length < (i + 1)) {
+        if (this.beneficiaries.length < i + 1) {
           this.beneficiaries.push(this.getPrimaryBeneficiaryFields());
         }
-        if(el.type === BeneficiaryTypes.TRUST) {
+        
+        if (el.type === BeneficiaryTypes.TRUST) {
           this.setTrustBeneficiaryFormFields(i);
-        }
+        } 
         else {
           this.setHumanBeneficiaryFormFields(i);
         }
@@ -65,6 +66,10 @@ export class AddBeneficiaryComponent implements OnInit {
       this.beneficiaries.patchValue(this.defaultValue);
       this.beneficiariesForm.markAllAsTouched();
     }
+
+    this.beneficiaries.valueChanges.subscribe((newValues) => {
+      this.updateOtherFields(newValues);
+    });
   }
 
   get beneficiaries(): FormArray {
@@ -99,20 +104,20 @@ export class AddBeneficiaryComponent implements OnInit {
     });
   }
 
-  onSubmit(): { beneficiaries: BeneficiaryFormData} {
+  onSubmit(): { beneficiaries: BeneficiaryFormData } {
     this.beneficiariesForm.markAllAsTouched();
 
     console.log(this.beneficiariesForm.value);
-    if(this.beneficiariesForm.valid) {
+    if (this.beneficiariesForm.valid) {
       return this.beneficiariesForm.value;
     }
 
-    throw new Error("Invalid form data.");
+    throw new Error('Invalid form data.');
   }
 
   onSelectChange(event: Event, index: number) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    
+
     if (selectedValue === BeneficiaryTypes.TRUST) {
       this.setTrustBeneficiaryFormFields(index);
     } else if (
@@ -175,6 +180,27 @@ export class AddBeneficiaryComponent implements OnInit {
     );
   }
 
+  updateOtherFields(newValues: any[]) {
+    // Iterate through the form groups
+    this.beneficiaries.controls.forEach((group, i) => {
+      const percentageControl = group.get('details.percentageAssigned');
+      
+      // Check if the value has changed
+      if (percentageControl?.dirty) {
+        const newValue = percentageControl.value;
+        const remainingPercentage = (100 - newValue) / (this.beneficiaries.length - 1);
+  
+        // Update other fields in the form array
+        this.beneficiaries.controls.forEach((otherGroup, otherIndex) => {
+          if (i !== otherIndex) {
+            const otherPercentageControl = otherGroup.get('details.percentageAssigned');
+            otherPercentageControl?.setValue(remainingPercentage, { emitEvent: false });
+          }
+        });
+      }
+    });
+  }
+
   getInitialPaValue(): number {
     const t = this.beneficiaries as FormArray;
     return 100 / t.length;
@@ -220,7 +246,7 @@ export class AddBeneficiaryComponent implements OnInit {
   }
 
   updateFromValue(values: BeneficiaryFormData): void {
-    if(values === null) return;
+    if (values === null) return;
 
     this.beneficiaries.patchValue(values);
     this.markAllField();
