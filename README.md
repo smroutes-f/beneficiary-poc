@@ -32,21 +32,23 @@ Follow these steps to run the Beneficiary Form POC locally:
 1. **Clone the Repository:**
 
 ```bash
-   git clone https://github.com/your-username/beneficiary-form-poc.git
-   cd beneficiary-form-poc
+git clone https://github.com/your-username/beneficiary-form-poc.git
+cd beneficiary-form-poc
 ```
 
 2. **Install Dependencies**:
 ```bash
-   npm install
+npm install
 ```
 
 3. **Run the Application**:
 ```bash
-   npm start
+npm start
 ```
 
 ## Github Published
+```bash
 ng build --base-href "https://smroutes-f.github.io/beneficiary-poc/"
 
 npx angular-cli-ghpages --dir=dist/beneficiary-poc/browser
+```
