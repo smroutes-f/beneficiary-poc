@@ -24,10 +24,11 @@ import { CapitalizePipe } from '@app/utils/capitalize.pipe';
 import {
   BeneficiaryTypes
 } from '@app/utils/constants';
-import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
 import { DisplayOption, DisplayOptionConfigContent } from '@app/utils/common';
 import { ValidatePercentageSum } from '@app/utils/PercentageSumValidator';
 import { ReviewPageComponent } from '@app/components/review-page/review-page.component';
+import { BeneficiaryComponent } from '@app/components/beneficiary/beneficiary.component';
+import { AddBeneficiaryComponent } from '@app/components/add-beneficiary/add-beneficiary.component';
 
 @Component({
   selector: 'app-home',
@@ -37,39 +38,30 @@ import { ReviewPageComponent } from '@app/components/review-page/review-page.com
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    BeneficiaryComponent,
     CapitalizePipe,
-    ReviewPageComponent
+    BeneficiaryComponent,
+    ReviewPageComponent,
+    AddBeneficiaryComponent
   ],
   providers: [NgbModalConfig, NgbModal],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  
-  @ViewChild('otherFormFields', { read: ViewContainerRef }) myContainerRef: ViewContainerRef | undefined;
 
   closeResult = '';
-  beneficiariesForm: FormGroup;
-  otherFields: Array<any> = [];
   showReviewPage: boolean = false;
   displayOption: DisplayOption;
 
   constructor(
-    private fb: FormBuilder,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {
 
-    this.beneficiariesForm = this.fb.group({
-      beneficiaries: this.fb.array(
-        [ this.getPrimaryBeneficiaryFields()],
-        { validators: [ ValidatePercentageSum() ] }),
-    });
-
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;
+    config.scrollable = true;
 
     this.displayOption = {
       isReviewPage: false,
@@ -117,53 +109,13 @@ export class HomeComponent {
     }
   }
 
-  getPrimaryBeneficiaryFields() {
-    return  this.fb.group({
-      type: [null, TypeValidator(Object.keys(BeneficiaryTypes))],
-    });
-  }
-
-  onSubmit() {
-    this.beneficiariesForm.markAllAsTouched();
-
-    console.log(this.getReviewData());
-    if(this.beneficiariesForm.valid) {
-      this.showReviewPage = true;
-    }
-  }
-
-  get beneficiaries(): FormArray {
-    return this.beneficiariesForm.get('beneficiaries') as FormArray;
-  }
-
-  getArrayElements(): FormGroup[] {
-    return this.beneficiaries.controls.map(control => control as FormGroup);
-  }
-
-  addNewBeneficiary() {
-    this.beneficiaries.push(this.getPrimaryBeneficiaryFields());
-    this.updatePaValue();
-  }
-
-  updatePaValue() {
-    const pa = 100 / this.beneficiaries.length;
-    this.beneficiaries.controls.forEach(control => {
-      const t = control.get('details.percentageAssigned') as FormControl;
-      if(t) t.setValue(pa);
-    });
-  }
-
-  removeNewBeneficiary(index: number) {
-    this.beneficiaries.removeAt(index);
-    this.updatePaValue();
-  }
-
   getReviewData() {
-    return this.beneficiaries.value;
+    return null;
   }
 
   toggleReviewPage(value: boolean): void {
     this.showReviewPage = value;
+    this.displayOption.isReviewPage = value;
   }
 
   getDisplayOption(): DisplayOptionConfigContent {

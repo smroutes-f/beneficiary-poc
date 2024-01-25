@@ -1,1 +1,39 @@
-<p>add-beneficiary works!</p>
+<div>
+  <form [formGroup]="beneficiariesForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="beneficiary-form" formArrayName="beneficiaries">
+      <div *ngFor="let beneficiary of getArrayElements(); let i = index">
+        <div
+          [formGroupName]="i"
+          class="pt-3"
+          [ngClass]="{ 'border-top': i > 0 }"
+        >
+          <div
+            class="d-flex justify-content-end position-absolute right-1 gap-2"
+          >
+            <button
+              type="button"
+              class="btn btn-light"
+              *ngIf="beneficiaries.length < 2 && i == beneficiaries.length - 1"
+              (click)="addNewBeneficiary()"
+            >
+              <i class="bi bi-plus-circle"></i> Add New
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning"
+              *ngIf="beneficiaries.length > 1"
+              (click)="removeNewBeneficiary(i)"
+            >
+              <i class="bi bi-trash"></i> Remove
+            </button>
+          </div>
+
+          <app-beneficiary
+                [items]="beneficiary"
+                [fieldIndex]="i"
+              ></app-beneficiary>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
