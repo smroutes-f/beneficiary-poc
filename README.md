@@ -41,7 +41,7 @@ Follow these steps to run the Beneficiary Form POC locally:
    npm install
 ```
 
-3. **Run the Application::
+3. **Run the Application**:
 ```bash
    npm start
 ```
