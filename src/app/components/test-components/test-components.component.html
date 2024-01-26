@@ -1,0 +1,95 @@
+<!-- This is the main modal -->
+<modal>
+  <modal-header> This is the modal header </modal-header>
+
+  <!-- This is the modal body, where we need to add the form -->
+  <modal-body>
+    <!-- This div will hold the itrative form fields like Beneficiary Types selection field -->
+    <div *ngFor="let beneficiary of beneficiaries; let i = index">
+      <!-- This div will represent the form/add remove button -->
+      <div class="beneficiary-card">
+        <div class="btn-form">
+          <shared-pvd-label>Primary beneficiary</shared-pvd-label>
+          <shared-pvd-select
+            [options]="primaryBeneficiarySelectOptions"
+            [value]="beneficiary.type"
+            (select)="updateTypeValue($event, i)"
+          >
+          </shared-pvd-select>
+
+          <!-- This will show the Spouse OR Non Spouse fields -->
+          <div *ngIf="isSNSField(beneficiary.type)">
+            <div class="full-name-field">
+              <shared-pvd-label>Full Name</shared-pvd-label>
+              <shared-pvd-fullName
+                (valueChange)="updateFullName($event, i)"
+                [firstName]="beneficiary.details.firstName"
+                [milddleName]="beneficiary.details.middleName"
+                [lastName]="beneficiary.details.lastName"
+              ></shared-pvd-fullName>
+            </div>
+
+            <div class="date-of-birth-field">
+              <shared-pvd-label>Date of Birth</shared-pvd-label>
+              <shared-pvd-date-select
+                (valueChange)="updateDob($event, i)"
+                [value]="beneficiary.details.dateOfBirth"
+              ></shared-pvd-date-select>
+            </div>
+          </div>
+
+          <!-- This will show the Trust Form fields -->
+          <div *ngIf="isTrustField(beneficiary.type)">
+            <div class="trust-name-field">
+              <shared-pvd-label>Percentage assigned</shared-pvd-label>
+              <shared-pvd-input
+                [value]="beneficiary.details.trustName"
+                (keyUp)="updateTrustName($event, i)"
+              ></shared-pvd-input>
+            </div>
+
+            <div class="date-of-established-field">
+                <shared-pvd-label>Date of Established</shared-pvd-label>
+                <shared-pvd-date-select
+                  (valueChange)="updateEstablished($event, i)"
+                  [value]="beneficiary.details.dateOfEstablished"
+                ></shared-pvd-date-select>
+              </div>
+          </div>
+
+          <!-- Add if any other beneficiary type exist here -->
+          <div></div>
+
+          <!-- The Percentage assigned field is common for any type of Beneficiary, so kept it outside of the type check if block -->
+          <div
+            class="percentage-assigned-field"
+            *ngIf="getBeneficiariesCount() > 1"
+          >
+            <shared-pvd-label>Percentage assigned</shared-pvd-label>
+            <shared-pvd-input
+              [value]="beneficiary.details.percentageAssigned"
+              (keyUp)="updatePa($event, i)"
+            ></shared-pvd-input>
+          </div>
+        </div>
+
+        <div class="btn-holder">
+          <button
+            class="btn"
+            (click)="addNewBeneficiary()"
+            *ngIf="beneficiaries.length < 2 && i == beneficiaries.length - 1"
+          >
+            Add New Beneficiary
+          </button>
+          <button
+            class="btn"
+            (click)="removeNewBeneficiary(i)"
+            *ngIf="beneficiaries.length > 1"
+          >
+            Add New Beneficiary
+          </button>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+</modal>
