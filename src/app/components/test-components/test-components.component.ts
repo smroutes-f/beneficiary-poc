@@ -153,10 +153,20 @@ export class TestComponentsComponent {
   }
 
   updatePa(val: any, i: any) {
-    this.beneficiaries[i].details.pa = val;
+    this.beneficiaries[i].details.percentageAssigned = val;
+
+    
 
     if (this.validatePa(val)) {
       this.toggleError(i, 'details.pa', '');
+      const calculateRestPa = (100 - parseInt(val)) / (this.beneficiaries.length - 1);
+
+      this.beneficiaries.forEach((_: any, index: number) => {
+        if(i !== index && this.beneficiaries[index].details && this.beneficiaries[index].details.percentageAssigned) {
+          this.beneficiaries[index].details.percentageAssigned = calculateRestPa;
+        }
+      });
+
     } else {
       this.toggleError(
         i,
@@ -167,6 +177,8 @@ export class TestComponentsComponent {
   }
 
   validatePa(value: number): boolean {
+    if(!Number.isInteger(value)) return false;
+
     const finalValue = this.beneficiaries.reduce(
       (accumulator: number, currentValue: number) => accumulator + currentValue,
       0
