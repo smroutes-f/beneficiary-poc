@@ -16,6 +16,9 @@
             (select)="updateTypeValue($event, i)"
           >
           </shared-pvd-select>
+          <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'type'))">
+              {{ checkValidation(i, getErrorKey(i, 'type')) }}
+          </shared-error-alert>
 
           <!-- This will show the Spouse OR Non Spouse fields -->
           <div *ngIf="isSNSField(beneficiary.type)">
@@ -27,6 +30,10 @@
                 [milddleName]="beneficiary.details.middleName"
                 [lastName]="beneficiary.details.lastName"
               ></shared-pvd-fullName>
+
+              <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'details.firstName'))">
+                {{ checkValidation(i, getErrorKey(i, 'details.firstName')) }}
+              </shared-error-alert>
             </div>
 
             <div class="date-of-birth-field">
@@ -35,6 +42,9 @@
                 (valueChange)="updateDob($event, i)"
                 [value]="beneficiary.details.dateOfBirth"
               ></shared-pvd-date-select>
+              <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'details.dateOfBirth'))">
+                {{ checkValidation(i, getErrorKey(i, 'details.dateOfBirth')) }}
+              </shared-error-alert>
             </div>
           </div>
 
@@ -46,6 +56,9 @@
                 [value]="beneficiary.details.trustName"
                 (keyUp)="updateTrustName($event, i)"
               ></shared-pvd-input>
+              <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'details.trustName'))">
+                {{ checkValidation(i, getErrorKey(i, 'details.trustName')) }}
+              </shared-error-alert>
             </div>
 
             <div class="date-of-established-field">
@@ -54,6 +67,9 @@
                   (valueChange)="updateEstablished($event, i)"
                   [value]="beneficiary.details.dateOfEstablished"
                 ></shared-pvd-date-select>
+                <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'details.dateOfEstablished'))">
+                  {{ checkValidation(i, getErrorKey(i, 'details.dateOfEstablished')) }}
+                </shared-error-alert>
               </div>
           </div>
 
@@ -70,6 +86,9 @@
               [value]="beneficiary.details.percentageAssigned"
               (keyUp)="updatePa($event, i)"
             ></shared-pvd-input>
+            <shared-error-alert *ngIf="!!checkValidation(i, getErrorKey(i, 'details.percentageAssigned'))">
+              {{ checkValidation(i, getErrorKey(i, 'details.percentageAssigned')) }}
+            </shared-error-alert>
           </div>
         </div>
 
